@@ -10,12 +10,11 @@ MODULE_AUTHOR("Luigi Auggiero");
 MODULE_DESCRIPTION("VMX_HANDLE_EXIT TRACING MODULE FOR x86 ARCHITECTURE");
 
 /* Format string used for logging VM Exits in the module */ 
-#define PRINT_FMT "%d,%d,0x%x,0x%x,0x%llx,%u\n"
+#define PRINT_FMT "%d,%d,0x%x,0x%x,%u\n"
 
 /* VMCS fields HEX encoding, according to Intel Manual */
 static uint64_t cr0_field = 0x6800;
 static uint64_t cr4_field = 0x6804;
-static uint64_t efer_field = 0x2806;
 static uint64_t exit_field = 0x4402;
 
 /* Integer variable to keep track of the number of exits */
@@ -36,8 +35,7 @@ static void vmx_handle_exit_post_handler(struct kprobe *probe, struct pt_regs *r
     uint64_t exit_value;
 	uint64_t cr0_value;
     uint64_t cr4_value;
-    uint64_t efer_value;
-    
+        
 	exits_counter++;
 	
     struct kvm_vcpu *vcpu = (struct kvm_vcpu *)regs->di;
@@ -57,14 +55,10 @@ static void vmx_handle_exit_post_handler(struct kprobe *probe, struct pt_regs *r
 	    : "r" (cr4_field)
 	    : "cc");
 	    
-    asm volatile("vmread %1, %0"
-	    : "=r" (efer_value)
-	    : "r" (efer_field)
-	    : "cc");
     
     printk(KERN_DEBUG PRINT_FMT, 
 			exits_counter, vcpu->vcpu_id, (uint32_t)cr0_value, 
-			(uint32_t)cr4_value, efer_value, (uint32_t)exit_value);
+			(uint32_t)cr4_value, (uint32_t)exit_value);
 }
 
 /* Module initializing function */
