@@ -1,0 +1,24 @@
+digraph FSM {
+    rankdir=LR;
+    node [shape=circle];
+    START [shape=box, width=0.2, label=Start, style=dashed];
+    START -> S1;
+    "S2" -> "S2" [label="IO_INSTRUCTION"];
+    "S2" -> "S2" [label="EPT_MISCONFIG"];
+    "S2" -> "S1" [label="EXCEPTION_NMI"];
+    "S1" -> "S1" [label="EPT_VIOLATION"];
+    "S2" -> "S2" [label="MSR_WRITE"];
+    "S2" -> "S2" [label="WBINVD"];
+    "S2" -> "S2" [label="EXTERNAL_INTERRUPT"];
+    "S1" -> "S1" [label="IO_INSTRUCTION"];
+    "S1" -> "S1" [label="EPT_MISCONFIG"];
+    "S2" -> "S2" [label="EXCEPTION_NMI"];
+    "S1" -> "S1" [label="INTERRUPT_WINDOW"];
+    "S1" -> "S1" [label="EXTERNAL_INTERRUPT"];
+    "S2" -> "S1" [label="IO_INSTRUCTION"];
+    "S2" -> "S2" [label="CPUID"];
+    "S2" -> "S2" [label="EPT_VIOLATION"];
+    "S2" -> "S1" [label="CR_ACCESS"];
+    "S1" -> "S2" [label="CR_ACCESS"];
+    "S2" -> "S2" [label="MSR_READ"];
+}
