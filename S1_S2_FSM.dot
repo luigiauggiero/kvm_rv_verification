@@ -1,8 +1,8 @@
 digraph FSM {
     rankdir=LR;
     node [shape=circle];
-    START [shape=box, width=0.2, label=Start, style=dashed];
-    START -> S1;
+    start [shape=box, width=0.2, label=Start, style=dashed];
+    start -> S1;
     "S2" -> "S2" [label="IO_INSTRUCTION"];
     "S2" -> "S2" [label="EPT_MISCONFIG"];
     "S2" -> "S1" [label="EXCEPTION_NMI"];
